@@ -1,0 +1,12 @@
+AllCops:
+  TargetRubyVersion: 2.3.1
+
+Style/Documentation:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
