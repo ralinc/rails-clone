@@ -4,10 +4,10 @@ require './spec/test_app/app/models/application_record'
 require './spec/test_app/app/models/post'
 
 describe ActiveRecord::Base do
-  let(:attributes) { {id: 1, title: 'Code'} }
+  let(:attributes) { { id: 1, title: 'Code' } }
 
   before do
-    Post.establish_connection database: "./spec/test_app/db/development.sqlite3"
+    Post.establish_connection database: './spec/test_app/db/development.sqlite3'
   end
 
   it 'initializes with attributes' do
@@ -33,5 +33,20 @@ describe ActiveRecord::Base do
     post = Post.find 1
 
     expect(post).to have_attributes(attributes)
+  end
+
+  describe '(where clause)' do
+    it 'limits the records' do
+      relation = Post.where('id = 2')
+
+      expect(relation.size).to eq 1
+      expect(relation.first.id).to eq 2
+    end
+
+    it 'is chainable' do
+      relation = Post.where('id = 2').where('title IS NOT NULL')
+
+      expect(relation.to_sql).to eq 'SELECT * FROM posts WHERE id = 2 AND title IS NOT NULL'
+    end
   end
 end

@@ -1,4 +1,5 @@
 require 'active_record/connection_adapter'
+require 'active_record/relation'
 
 module ActiveRecord
   class Base
@@ -21,11 +22,15 @@ module ActiveRecord
       end
 
       def find(id)
-        find_by_sql("SELECT * FROM #{table_name} WHERE id = #{id.to_i}").first
+        where("id = #{id.to_i}").first
       end
 
       def all
-        find_by_sql "SELECT * FROM #{table_name}"
+        Relation.new self
+      end
+
+      def where(*args)
+        all.where(*args)
       end
 
       def find_by_sql(sql)
@@ -43,7 +48,7 @@ module ActiveRecord
       end
 
       def table_name
-        name.downcase + 's'
+        "#{name.downcase}s"
       end
 
       def connection
