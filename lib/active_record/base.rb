@@ -20,15 +20,18 @@ module ActiveRecord
       def abstract_class=(_value)
       end
 
-      def all
-        connection.execute("SELECT * FROM #{table_name}").map do |attributes|
-          new attributes
-        end
+      def find(id)
+        find_by_sql("SELECT * FROM #{table_name} WHERE id = #{id.to_i}").first
       end
 
-      def find(id)
-        attributes = connection.execute("SELECT * FROM #{table_name} WHERE id = #{id.to_i}").first
-        new attributes
+      def all
+        find_by_sql "SELECT * FROM #{table_name}"
+      end
+
+      def find_by_sql(sql)
+        connection.execute(sql).map do |attributes|
+          new attributes
+        end
       end
 
       def column?(name)
