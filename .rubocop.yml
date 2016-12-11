@@ -1,7 +1,16 @@
 AllCops:
-  TargetRubyVersion: 2.3.1
+  TargetRubyVersion: 2.3
+
+Metrics/LineLength:
+  Max: 128
 
 Style/Documentation:
+  Enabled: false
+
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+Style/ModuleFunction:
   Enabled: false
 
 Style/MutableConstant:
@@ -10,3 +19,5 @@ Style/MutableConstant:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/ClassVars:
+  Enabled: false
