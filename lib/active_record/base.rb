@@ -6,34 +6,50 @@ module ActiveRecord
       @attributes = attributes
     end
 
-    def self.abstract_class=(value)
+    def method_missing(name)
+      return @attributes[name] if self.class.column?(name)
+      super
     end
 
-    def self.all
-      connection.execute("SELECT * FROM posts").map do |attributes|
+    def respond_to_missing?(name, include_all = false)
+      return true if self.class.column?(name)
+      super
+    end
+
+    class << self
+      def abstract_class=(_value)
+      end
+
+      def all
+        connection.execute("SELECT * FROM #{table_name}").map do |attributes|
+          new attributes
+        end
+      end
+
+      def find(id)
+        attributes = connection.execute("SELECT * FROM #{table_name} WHERE id = #{id.to_i}").first
         new attributes
       end
-    end
 
-    def self.find(id)
-      attributes = connection.execute("SELECT * FROM posts WHERE id = #{id.to_i}").first
-      new attributes
-    end
+      def column?(name)
+        columns.include?(name)
+      end
 
-    def self.establish_connection(options)
-      @@connection = ConnectionAdapter::SqliteAdapter.new options[:database]
-    end
+      def columns
+        connection.columns table_name
+      end
 
-    def self.connection
-      @@connection
-    end
+      def table_name
+        name.downcase + 's'
+      end
 
-    def id
-      @attributes[:id]
-    end
+      def connection
+        @@connection
+      end
 
-    def title
-      @attributes[:title]
+      def establish_connection(options)
+        @@connection = ConnectionAdapter::SqliteAdapter.new options[:database]
+      end
     end
   end
 end
