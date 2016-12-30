@@ -1,12 +1,12 @@
 require 'spec_helper'
-require 'active_record/base'
-require './spec/test_app/app/models/application_record'
-require './spec/test_app/app/models/post'
+require 'active_record'
+require 'active_support'
 
 describe ActiveRecord::Base do
   let(:attributes) { { id: 1, title: 'Code' } }
 
   before do
+    ActiveSupport::Dependencies.autoload_paths = Dir["#{__dir__}/test_app/app/*"]
     Post.establish_connection database: './spec/test_app/db/development.sqlite3'
   end
 
