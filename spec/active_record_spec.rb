@@ -1,14 +1,7 @@
 require 'spec_helper'
-require 'active_record'
-require 'active_support'
 
 describe ActiveRecord::Base do
   let(:attributes) { { id: 1, title: 'Code' } }
-
-  before do
-    ActiveSupport::Dependencies.autoload_paths = Dir["#{__dir__}/test_app/app/*"]
-    Post.establish_connection database: './spec/test_app/db/development.sqlite3'
-  end
 
   it 'initializes with attributes' do
     post = Post.new attributes
