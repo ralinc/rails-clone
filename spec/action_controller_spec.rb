@@ -11,6 +11,10 @@ class TestController < ActionController::Base
     response << 'show'
   end
 
+  def redirect
+    redirect_to '/'
+  end
+
   private
 
   def callback
@@ -22,6 +26,10 @@ class Request
   def params
     { 'id' => 1 }
   end
+end
+
+class Response
+  attr_accessor :status, :location, :body
 end
 
 describe ActionController::Base do
@@ -48,5 +56,15 @@ describe ActionController::Base do
     controller.process :show
 
     expect(controller.response).to eq %w(callback show)
+  end
+
+  it 'redirects to url' do
+    controller.response = Response.new
+
+    controller.process :redirect
+
+    expect(controller.response.status).to eq 302
+    expect(controller.response.location).to eq '/'
+    expect(controller.response.body).to eq ['You are being redirected']
   end
 end
