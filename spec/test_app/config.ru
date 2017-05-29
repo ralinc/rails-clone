@@ -14,4 +14,20 @@ class App
   end
 end
 
+class Logger
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    method = env['REQUEST_METHOD']
+    path = env['PATH_INFO']
+
+    puts "#{method} #{path}"
+
+    @app.call env
+  end
+end
+
+use Logger
 run App.new
