@@ -1,11 +1,13 @@
 PATH
   remote: ../..
   specs:
-    rails-clone (0.1.0)
+    rails-clone (0.0.1)
+      rack
 
 GEM
   remote: https://rubygems.org/
   specs:
+    rack (2.0.3)
 
 PLATFORMS
   ruby
@@ -14,4 +16,4 @@ DEPENDENCIES
   rails-clone!
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
